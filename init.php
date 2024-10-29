@@ -32,3 +32,32 @@ $db = new DatabaseConnection(
     $db_password
 );
 $conn = $db->connect();
+
+if ($conn) {
+    $directory = __DIR__ . '/database';
+
+    $sqlFiles = [
+        'users.sql',
+        'exam_attempts.sql',
+        'questions.sql',
+        'user_answers.sql'
+    ];
+
+    foreach ($sqlFiles as $file) {
+        $filePath = "{$directory}/{$file}";
+
+        if (file_exists($filePath)) {
+            $sql = file_get_contents($filePath);
+            try {
+                $conn->exec($sql);
+                echo "Executed $file successfully.\n";
+            } catch (PDOException $e) {
+                echo "Error executing $file: " . $e->getMessage() . "\n";
+            }
+        } else {
+            echo "File $file does not exist.\n";
+        }
+    }
+} else {
+    echo "Database connection failed.\n";
+}
