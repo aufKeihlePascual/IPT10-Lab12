@@ -15,7 +15,7 @@ class UserAnswer extends BaseModel
         $this->user_id = $user_id;
         $this->answers = $answers;
 
-        $sql = "INSERT INTO users_answers
+        $sql = "INSERT INTO user_answers
                 SET
                     user_id=:user_id,
                     answers=:answers";        

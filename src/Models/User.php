@@ -7,6 +7,8 @@ use \PDO;
 
 class User extends BaseModel
 {
+    public $complete_name, $email, $password;
+    
     public function save($data) {
         $sql = "INSERT INTO users 
                 SET
@@ -52,5 +54,13 @@ class User extends BaseModel
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function toArray() {
+        return [
+            'complete_name' => $this->complete_name,
+            'email' => $this->email,
+            'password' => $this->password,
+        ];
+    }    
 
 }

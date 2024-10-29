@@ -3,37 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-
+    <title>{{ title }}</title>
     <style>
-        body {padding-top: 50px;}
-        .main__container { width: 100dvw; padding: 0px 500px;}
-        h2 { text-align: center;}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .registration-container {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px; /* Set a fixed width */
+            box-sizing: border-box; 
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 95%; 
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .register-button {
+            background-color: #007bff; /* Blue color for the button */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%; /* Make the button full width */
+            margin-top: 10px; /* Add some space above the button */
+        }
+        .register-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center; /* Center the error message */
+        }
     </style>
-
 </head>
 <body>
-    <div class="main__container">
-        <h2>Registration Form</h2>
+    <div class="registration-container">
+        <h1>Registration Form</h1>
+        {{#errors}}
+        <div class="error-message">
+            <ul>
+                {{#errors}}
+                <li>{{ . }}</li>
+                {{/errors}}
+            </ul>
+        </div>
+        {{/errors}}
+        <form method="POST" action="/register">
 
-        <form action="/register" method="POST">
-            <div>
-                <label for="complete_name">Complete Name <span style="color: red">*</span></label>
-                <input type="text" id="complete_name" name="complete_name" required>
-            </div>
-    
-            <div>
-                <label for="email">Email Address <span style="color: red">*</span></label>
-                <input type="email" id="email" name="email" required>
-            </div>
-    
-            <div>
-                <button type="submit">Register</button>
-            </div>
+            <label for="complete_name">Complete Name:</label>
+            <input type="text" name="complete_name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" required>
+
+            <input type="submit" class="register-button" value="Register"> 
         </form>
-
+        <div style="text-align: center; margin-top: 15px;">
+            <span>Already have an account? <a href="/login">Login here</a>.</span>
+        </div>
     </div>
 </body>
 </html>

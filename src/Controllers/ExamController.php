@@ -18,9 +18,10 @@ class ExamController extends BaseController
     {
         $this->initializeSession();
         $data = $_POST;
-        // Save the registration to database
-        $_SESSION['user_id'] = 1; // Replace this literal value with the actual user ID from new registration
-        $_SESSION['complete_name'] = $data['complete_name'];
+
+        # Save the registration to database
+        $_SESSION['user_id'] = 1;
+        $_SESSION['complete_name'] = 'complete_name';
         $_SESSION['email'] = $data['email'];
 
         return $this->render('pre-exam', $data);
@@ -31,7 +32,6 @@ class ExamController extends BaseController
         $this->initializeSession();
         $item_number = 1;
 
-        // If request is coming from the form, save the inputs to the session
         if (isset($_POST['item_number']) && isset($_POST['answer'])) {
             array_push($_SESSION['answers'], $_POST['answer']);
             $_SESSION['item_number'] = $_POST['item_number'] + 1;
