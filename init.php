@@ -33,29 +33,38 @@ $db = new DatabaseConnection(
 );
 $conn = $db->connect();
 
+function tableExists($conn, $tableName) {
+    $query = "SHOW TABLES LIKE :tableName";
+    $stmt = $conn->prepare($query);
+    $stmt->execute(['tableName' => $tableName]);
+    return $stmt->rowCount() > 0;
+}
+
 if ($conn) {
     $directory = __DIR__ . '/database';
 
     $sqlFiles = [
-        'users.sql',
-        'exam_attempts.sql',
-        'questions.sql',
-        'user_answers.sql'
+        'users.sql' => 'users',
+        'exam_attempts.sql' => 'exam_attempts',
+        'questions.sql' => 'questions',
+        'user_answers.sql' => 'user_answers'
     ];
 
-    foreach ($sqlFiles as $file) {
-        $filePath = "{$directory}/{$file}";
+    foreach ($sqlFiles as $file => $tableName) {
+        if (!tableExists($conn, $tableName)) {
+            $filePath = "{$directory}/{$file}";
 
-        if (file_exists($filePath)) {
-            $sql = file_get_contents($filePath);
-            try {
-                $conn->exec($sql);
-                echo "Executed $file successfully.\n";
-            } catch (PDOException $e) {
-                echo "Error executing $file: " . $e->getMessage() . "\n";
+            if (file_exists($filePath)) {
+                $sql = file_get_contents($filePath);
+                try {
+                    $conn->exec($sql);
+                    echo "Executed $file successfully.\n";
+                } catch (PDOException $e) {
+                    echo "Error executing $file: " . $e->getMessage() . "\n";
+                }
+            } else {
+                echo "File $file does not exist.\n";
             }
-        } else {
-            echo "File $file does not exist.\n";
         }
     }
 } else {
